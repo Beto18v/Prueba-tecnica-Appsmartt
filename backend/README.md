@@ -5,12 +5,14 @@ Backend para gestión de operaciones financieras desarrollado con Node.js, TypeS
 ## Características
 
 - ✅ API REST con endpoint POST /api/operations
+- ✅ API de autenticación con endpoint POST /api/auth/login
 - ✅ Autenticación JWT con middleware
+- ✅ Hash de contraseñas con bcrypt
 - ✅ Validación de datos con class-validator
 - ✅ Transacciones de base de datos con TypeORM
 - ✅ Manejo centralizado de errores
 - ✅ Tests de integración con Jest y Supertest
-- ✅ Migraciones de base de datos
+- ✅ Migraciones de base de datos y seeds
 - ✅ TypeScript estricto
 
 ## Instalación
@@ -40,15 +42,50 @@ cp .env.example .env
 npm run migrate
 ```
 
+5. **Crear usuario de prueba:**
+
+```bash
+npm run seed
+```
+
 ## Scripts disponibles
 
 - `npm run dev` - Desarrollo con hot reload
 - `npm run build` - Compilar TypeScript
 - `npm run start` - Ejecutar versión compilada
 - `npm run migrate` - Ejecutar migraciones
+- `npm run seed` - Crear usuario de prueba
 - `npm run test` - Ejecutar tests
 
 ## Uso de la API
+
+### Autenticación
+
+```bash
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "Password123!"
+}
+```
+
+**Respuesta exitosa (200):**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Error de credenciales (401):**
+
+```json
+{
+  "message": "Credenciales inválidas"
+}
+```
 
 ### Crear operación
 
@@ -84,14 +121,24 @@ src/
 ├── app.ts                # Configuración Express
 ├── data-source.ts        # Configuración TypeORM
 ├── entities/             # Entidades de base de datos
+│   ├── Operation.ts      # Entidad de operaciones
+│   └── User.ts           # Entidad de usuarios
 ├── migrations/           # Migraciones TypeORM
 ├── middleware/           # Middlewares (auth, errores)
-├── modules/operations/   # Módulo de operaciones
-│   ├── operations.controller.ts
-│   ├── operations.service.ts
-│   ├── operations.repository.ts
-│   ├── operations.routes.ts
-│   └── dtos/
+├── modules/
+│   ├── operations/       # Módulo de operaciones
+│   │   ├── operations.controller.ts
+│   │   ├── operations.service.ts
+│   │   ├── operations.repository.ts
+│   │   ├── operations.routes.ts
+│   │   └── dtos/
+│   └── auth/             # Módulo de autenticación
+│       ├── auth.controller.ts
+│       ├── auth.service.ts
+│       ├── auth.routes.ts
+│       └── dtos/
+├── seeds/                # Seeds de base de datos
+│   └── user.seed.ts      # Seed del usuario de prueba
 └── types/               # Tipos TypeScript
 ```
 
@@ -111,7 +158,37 @@ npm run test
 
 Los tests cubren:
 
-- Creación exitosa de operaciones
-- Validaciones de entrada
-- Autenticación JWT
-- Manejo de errores
+- **Autenticación:**
+  - Login exitoso con credenciales válidas
+  - Error 401 con credenciales inválidas
+  - Validación de campos de entrada
+- **Operaciones:**
+  - Creación exitosa de operaciones
+  - Validaciones de entrada
+  - Autenticación JWT
+  - Manejo de errores
+
+## Usuario de prueba
+
+Después de ejecutar `npm run seed`, estará disponible:
+
+- **Email:** `test@example.com`
+- **Password:** `Password123!`
+
+## Variables de entorno requeridas
+
+```env
+# Base de datos PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=password
+DB_DATABASE=prueba_tecnica
+
+# JWT
+JWT_SECRET=your_super_secret_jwt_key_here
+
+# Servidor
+PORT=3000
+NODE_ENV=development
+```

@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import { AuthenticatedRequest } from "../types";
+import { Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { AuthenticatedRequest } from '../types';
 
 /**
  * Middleware de autenticación JWT
@@ -14,11 +14,11 @@ export const authMiddleware = (
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       res.status(401).json({
-        error: "Token de autorización requerido",
+        error: 'Token de autorización requerido',
         message:
-          "Proporciona un token Bearer válido en el header Authorization",
+          'Proporciona un token Bearer válido en el header Authorization',
       });
       return;
     }
@@ -27,9 +27,9 @@ export const authMiddleware = (
     const jwtSecret = process.env.JWT_SECRET;
 
     if (!jwtSecret) {
-      console.error("JWT_SECRET no está configurado");
+      console.error('JWT_SECRET no está configurado');
       res.status(500).json({
-        error: "Error de configuración del servidor",
+        error: 'Error de configuración del servidor',
       });
       return;
     }
@@ -38,8 +38,8 @@ export const authMiddleware = (
 
     if (!decoded.id) {
       res.status(401).json({
-        error: "Token inválido",
-        message: "El token no contiene un ID de usuario válido",
+        error: 'Token inválido',
+        message: 'El token no contiene un ID de usuario válido',
       });
       return;
     }
@@ -49,13 +49,13 @@ export const authMiddleware = (
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       res.status(401).json({
-        error: "Token inválido",
-        message: "El token proporcionado no es válido",
+        error: 'Token inválido',
+        message: 'El token proporcionado no es válido',
       });
     } else {
-      console.error("Error en autenticación:", error);
+      console.error('Error en autenticación:', error);
       res.status(500).json({
-        error: "Error interno del servidor",
+        error: 'Error interno del servidor',
       });
     }
   }

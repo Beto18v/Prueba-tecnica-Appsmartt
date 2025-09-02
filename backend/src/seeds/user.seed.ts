@@ -1,7 +1,7 @@
-import "dotenv/config";
-import { AppDataSource } from "../data-source";
-import { User } from "../entities/User";
-import bcrypt from "bcrypt";
+import 'dotenv/config';
+import { AppDataSource } from '../data-source';
+import { User } from '../entities/User';
+import bcrypt from 'bcrypt';
 
 /**
  * Seed para crear usuario de prueba
@@ -19,30 +19,30 @@ async function seedUser(): Promise<void> {
 
     // Verificar si el usuario ya existe
     const existingUser = await userRepository.findOne({
-      where: { email: "test@example.com" },
+      where: { email: 'test@example.com' },
     });
 
     if (existingUser) {
-      console.log("✅ Usuario de prueba ya existe");
+      console.log('✅ Usuario de prueba ya existe');
       return;
     }
 
     // Hashear la contraseña
-    const hashedPassword = await bcrypt.hash("Password123!", 10);
+    const hashedPassword = await bcrypt.hash('Password123!', 10);
 
     // Crear el usuario
     const user = userRepository.create({
-      email: "test@example.com",
+      email: 'test@example.com',
       password: hashedPassword,
     });
 
     await userRepository.save(user);
 
-    console.log("✅ Usuario de prueba creado exitosamente");
-    console.log("   Email: test@example.com");
-    console.log("   Password: Password123!");
+    console.log('✅ Usuario de prueba creado exitosamente');
+    console.log('   Email: test@example.com');
+    console.log('   Password: Password123!');
   } catch (error) {
-    console.error("❌ Error al crear usuario de prueba:", error);
+    console.error('❌ Error al crear usuario de prueba:', error);
     throw error;
   } finally {
     if (AppDataSource.isInitialized) {
@@ -55,11 +55,11 @@ async function seedUser(): Promise<void> {
 if (require.main === module) {
   seedUser()
     .then(() => {
-      console.log("🌱 Seed completado");
+      console.log('🌱 Seed completado');
       process.exit(0);
     })
-    .catch((error) => {
-      console.error("💥 Error en seed:", error);
+    .catch(error => {
+      console.error('💥 Error en seed:', error);
       process.exit(1);
     });
 }

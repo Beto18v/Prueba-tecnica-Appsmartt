@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { OperationsController } from "./operations.controller";
-import { authMiddleware } from "../../middleware/auth.middleware";
+import { Router } from 'express';
+import { OperationsController } from './operations.controller';
+import { authMiddleware } from '../../middleware/auth.middleware';
 
 const router = Router();
 const operationsController = new OperationsController();
@@ -11,7 +11,7 @@ const operationsController = new OperationsController();
  * Requiere autenticación JWT
  */
 router.post(
-  "/operations",
+  '/operations',
   authMiddleware,
   operationsController.createOperation
 );

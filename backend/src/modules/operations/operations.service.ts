@@ -1,6 +1,6 @@
-import { OperationsRepository } from "./operations.repository";
-import { CreateOperationRequest, OperationResponse } from "../../types";
-import { Operation } from "../../entities/Operation";
+import { OperationsRepository } from './operations.repository';
+import { CreateOperationRequest, OperationResponse } from '../../types';
+import { Operation } from '../../entities/Operation';
 
 export class OperationsService {
   private operationsRepository: OperationsRepository;
@@ -31,7 +31,7 @@ export class OperationsService {
       // Mapear a respuesta
       return this.mapToResponse(operation);
     } catch (error) {
-      console.error("Error al crear operación:", error);
+      console.error('Error al crear operación:', error);
       throw error;
     }
   }
@@ -41,22 +41,22 @@ export class OperationsService {
    */
   private validateCurrency(currency: string): void {
     const validCurrencies = [
-      "USD",
-      "EUR",
-      "GBP",
-      "JPY",
-      "AUD",
-      "CAD",
-      "CHF",
-      "CNY",
-      "SEK",
-      "NZD",
+      'USD',
+      'EUR',
+      'GBP',
+      'JPY',
+      'AUD',
+      'CAD',
+      'CHF',
+      'CNY',
+      'SEK',
+      'NZD',
     ];
 
     if (!validCurrencies.includes(currency.toUpperCase())) {
       throw new Error(
         `Moneda no soportada: ${currency}. Monedas válidas: ${validCurrencies.join(
-          ", "
+          ', '
         )}`
       );
     }
@@ -67,7 +67,7 @@ export class OperationsService {
    */
   private validateAmount(amount: number): void {
     if (amount <= 0) {
-      throw new Error("El monto debe ser mayor a 0");
+      throw new Error('El monto debe ser mayor a 0');
     }
   }
 

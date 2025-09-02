@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { validateLoginCredentials } from "../utils/validation";
-import type { ValidationErrors } from "../utils/validation";
+import React, { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { validateLoginCredentials } from '../utils/validation';
+import type { ValidationErrors } from '../utils/validation';
 
 /**
  * Página de inicio de sesión
@@ -10,17 +10,25 @@ import type { ValidationErrors } from "../utils/validation";
  */
 const Login: React.FC = () => {
   const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   // Estados para el formulario
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Efecto para redirigir cuando se complete la autenticación
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   // Si ya está autenticado, redirigir al dashboard
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to='/dashboard' replace />;
   }
 
   /**
@@ -31,7 +39,7 @@ const Login: React.FC = () => {
 
     // Limpiar errores previos
     setErrors({});
-    setServerError("");
+    setServerError('');
 
     // Validar campos antes de enviar
     const validationErrors = validateLoginCredentials(email, password);
@@ -46,14 +54,13 @@ const Login: React.FC = () => {
 
     try {
       await login({ email, password });
-      // Si llegamos aquí, el login fue exitoso
-      // La redirección se maneja automáticamente por el ProtectedRoute
+      // La redirección se maneja automáticamente por el useEffect
     } catch (error) {
       // Manejar errores del servidor
       if (error instanceof Error) {
         setServerError(error.message);
       } else {
-        setServerError("Error desconocido. Intenta nuevamente.");
+        setServerError('Error desconocido. Intenta nuevamente.');
       }
     } finally {
       setIsLoading(false);
@@ -67,7 +74,7 @@ const Login: React.FC = () => {
     setEmail(e.target.value);
     // Limpiar error del campo cuando el usuario comienza a escribir
     if (errors.email) {
-      setErrors((prev) => ({ ...prev, email: "" }));
+      setErrors(prev => ({ ...prev, email: '' }));
     }
   };
 
@@ -78,60 +85,60 @@ const Login: React.FC = () => {
     setPassword(e.target.value);
     // Limpiar error del campo cuando el usuario comienza a escribir
     if (errors.password) {
-      setErrors((prev) => ({ ...prev, password: "" }));
+      setErrors(prev => ({ ...prev, password: '' }));
     }
   };
 
   return (
-    <div className="form-container">
-      <div className="form-card">
-        <div className="form-header">
-          <div className="logo">🔐</div>
+    <div className='form-container'>
+      <div className='form-card'>
+        <div className='form-header'>
+          <div className='logo'>🔐</div>
           <h1>Iniciar Sesión</h1>
           <p>Accede a tu cuenta para continuar</p>
         </div>
 
         {/* Mostrar error del servidor */}
-        {serverError && <div className="alert alert-error">{serverError}</div>}
+        {serverError && <div className='alert alert-error'>{serverError}</div>}
 
         <form onSubmit={handleSubmit} noValidate>
           {/* Campo Email */}
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+          <div className='form-group'>
+            <label htmlFor='email'>Email</label>
             <input
-              id="email"
-              type="email"
+              id='email'
+              type='email'
               value={email}
               onChange={handleEmailChange}
-              className={errors.email ? "error" : ""}
-              placeholder="tu@email.com"
+              className={errors.email ? 'error' : ''}
+              placeholder='tu@email.com'
               disabled={isLoading}
-              autoComplete="email"
-              aria-describedby={errors.email ? "email-error" : undefined}
+              autoComplete='email'
+              aria-describedby={errors.email ? 'email-error' : undefined}
             />
             {errors.email && (
-              <span id="email-error" className="error-message">
+              <span id='email-error' className='error-message'>
                 {errors.email}
               </span>
             )}
           </div>
 
           {/* Campo Password */}
-          <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+          <div className='form-group'>
+            <label htmlFor='password'>Contraseña</label>
             <input
-              id="password"
-              type="password"
+              id='password'
+              type='password'
               value={password}
               onChange={handlePasswordChange}
-              className={errors.password ? "error" : ""}
-              placeholder="Tu contraseña"
+              className={errors.password ? 'error' : ''}
+              placeholder='Tu contraseña'
               disabled={isLoading}
-              autoComplete="current-password"
-              aria-describedby={errors.password ? "password-error" : undefined}
+              autoComplete='current-password'
+              aria-describedby={errors.password ? 'password-error' : undefined}
             />
             {errors.password && (
-              <span id="password-error" className="error-message">
+              <span id='password-error' className='error-message'>
                 {errors.password}
               </span>
             )}
@@ -139,11 +146,11 @@ const Login: React.FC = () => {
 
           {/* Botón de envío */}
           <button
-            type="submit"
-            className="btn btn-primary"
+            type='submit'
+            className='btn btn-primary'
             disabled={isLoading}
           >
-            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+            {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
       </div>

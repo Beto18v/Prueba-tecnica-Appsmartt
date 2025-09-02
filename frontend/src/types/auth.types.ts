@@ -10,7 +10,7 @@ export interface LoginCredentials {
 
 // Interfaz para los datos del usuario
 export interface User {
-  id: number;
+  id: string; // UUID
   email: string;
   // Agregar más campos según la respuesta del backend
 }

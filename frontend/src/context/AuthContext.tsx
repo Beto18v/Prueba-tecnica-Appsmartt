@@ -4,20 +4,20 @@ import React, {
   useState,
   useEffect,
   ReactNode,
-} from "react";
+} from 'react';
 import {
   AuthContextType,
   LoginCredentials,
   User,
   LoginResponse,
-} from "../types/auth.types";
+} from '../types/auth.types';
 
 // Crear el contexto de autenticación
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Clave para almacenar el token en localStorage
-const TOKEN_STORAGE_KEY = "auth_token";
-const USER_STORAGE_KEY = "auth_user";
+const TOKEN_STORAGE_KEY = 'auth_token';
+const USER_STORAGE_KEY = 'auth_user';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -44,12 +44,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
         const storedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-        if (storedToken && storedUser) {
+        if (
+          storedToken &&
+          storedUser &&
+          storedUser !== 'undefined' &&
+          storedUser !== 'null'
+        ) {
           setToken(storedToken);
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        console.error("Error al cargar datos de autenticación:", error);
+        console.error('Error al cargar datos de autenticación:', error);
         // Limpiar datos corruptos
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         localStorage.removeItem(USER_STORAGE_KEY);
@@ -70,22 +75,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const apiUrl = import.meta.env.VITE_API_URL;
 
       if (!apiUrl) {
-        throw new Error("URL de la API no configurada");
+        throw new Error('URL de la API no configurada');
       }
 
       const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
       });
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error("Credenciales inválidas");
+          throw new Error('Credenciales inválidas');
         }
-        throw new Error("Error en el servidor. Intenta nuevamente.");
+        throw new Error('Error en el servidor. Intenta nuevamente.');
       }
 
       const data: LoginResponse = await response.json();
@@ -136,7 +141,7 @@ export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
 
   if (context === undefined) {
-    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
   }
 
   return context;

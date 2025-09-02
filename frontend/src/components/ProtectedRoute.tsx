@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import React, { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -16,10 +16,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // Mostrar loading mientras se verifica la autenticación
   if (loading) {
     return (
-      <div className="form-container">
-        <div className="form-card text-center">
-          <div className="form-header">
-            <div className="logo">⏳</div>
+      <div className='form-container'>
+        <div className='form-card text-center'>
+          <div className='form-header'>
+            <div className='logo'>⏳</div>
             <h1>Cargando...</h1>
             <p>Verificando autenticación</p>
           </div>
@@ -30,7 +30,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   // Si no está autenticado, redirigir al login
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to='/login' replace />;
   }
 
   // Si está autenticado, mostrar el contenido protegido

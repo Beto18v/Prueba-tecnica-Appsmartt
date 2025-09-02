@@ -40,14 +40,14 @@ export const validateLoginCredentials = (
 
   // Validar email
   if (!email.trim()) {
-    errors.email = "El email es requerido";
+    errors.email = 'El email es requerido';
   } else if (!isValidEmail(email)) {
-    errors.email = "El formato del email no es válido";
+    errors.email = 'El formato del email no es válido';
   }
 
   // Validar contraseña
   if (!password.trim()) {
-    errors.password = "La contraseña es requerida";
+    errors.password = 'La contraseña es requerida';
   }
 
   return errors;

@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import { validate } from "class-validator";
-import { plainToClass } from "class-transformer";
-import { AuthService } from "./auth.service";
-import { LoginDto } from "./dtos/login.dto";
+import { Request, Response, NextFunction } from 'express';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dtos/login.dto';
 
 export class AuthController {
   private authService: AuthService;
@@ -28,12 +28,12 @@ export class AuthController {
       if (errors.length > 0) {
         const errorMessages = errors
           .map((error: any) =>
-            Object.values(error.constraints || {}).join(", ")
+            Object.values(error.constraints || {}).join(', ')
           )
-          .join("; ");
+          .join('; ');
 
         res.status(400).json({
-          error: "Error de validación",
+          error: 'Error de validación',
           message: errorMessages,
         });
         return;
@@ -49,9 +49,9 @@ export class AuthController {
       res.status(200).json(result);
     } catch (error: any) {
       // Manejar error de credenciales inválidas específicamente
-      if (error.message === "Credenciales inválidas") {
+      if (error.message === 'Credenciales inválidas') {
         res.status(401).json({
-          message: "Credenciales inválidas",
+          message: 'Credenciales inválidas',
         });
         return;
       }

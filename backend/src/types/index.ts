@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request } from 'express';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -6,7 +6,7 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-export type OperationType = "buy" | "sell";
+export type OperationType = 'buy' | 'sell';
 
 export interface CreateOperationRequest {
   type: OperationType;

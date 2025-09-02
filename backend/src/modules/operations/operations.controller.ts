@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
-import { validate } from "class-validator";
-import { plainToClass } from "class-transformer";
-import { OperationsService } from "./operations.service";
-import { CreateOperationDto } from "./dtos/create-operation.dto";
-import { AuthenticatedRequest } from "../../types";
+import { Response, NextFunction } from 'express';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
+import { OperationsService } from './operations.service';
+import { CreateOperationDto } from './dtos/create-operation.dto';
+import { AuthenticatedRequest } from '../../types';
 
 export class OperationsController {
   private operationsService: OperationsService;
@@ -25,8 +25,8 @@ export class OperationsController {
       // Validar autenticación
       if (!req.user?.id) {
         res.status(401).json({
-          error: "Usuario no autenticado",
-          message: "Se requiere autenticación válida",
+          error: 'Usuario no autenticado',
+          message: 'Se requiere autenticación válida',
         });
         return;
       }
@@ -38,12 +38,12 @@ export class OperationsController {
       if (errors.length > 0) {
         const errorMessages = errors
           .map((error: any) =>
-            Object.values(error.constraints || {}).join(", ")
+            Object.values(error.constraints || {}).join(', ')
           )
-          .join("; ");
+          .join('; ');
 
         res.status(400).json({
-          error: "Error de validación",
+          error: 'Error de validación',
           message: errorMessages,
           details: errors,
         });
@@ -65,11 +65,11 @@ export class OperationsController {
     } catch (error: any) {
       // Manejar errores específicos
       if (
-        error.message?.includes("Moneda no soportada") ||
-        error.message?.includes("El monto debe ser mayor a 0")
+        error.message?.includes('Moneda no soportada') ||
+        error.message?.includes('El monto debe ser mayor a 0')
       ) {
         res.status(400).json({
-          error: "Error de validación",
+          error: 'Error de validación',
           message: error.message,
         });
         return;

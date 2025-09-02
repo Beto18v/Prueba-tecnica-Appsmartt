@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
-import { AppDataSource } from "../../data-source";
-import { Operation } from "../../entities/Operation";
-import { CreateOperationRequest } from "../../types";
+import { Repository } from 'typeorm';
+import { AppDataSource } from '../../data-source';
+import { Operation } from '../../entities/Operation';
+import { CreateOperationRequest } from '../../types';
 
 export class OperationsRepository {
   private repository: Repository<Operation>;
@@ -53,7 +53,7 @@ export class OperationsRepository {
   async findByUserId(userId: string): Promise<Operation[]> {
     return this.repository.find({
       where: { userId },
-      order: { createdAt: "DESC" },
+      order: { createdAt: 'DESC' },
     });
   }
 }
